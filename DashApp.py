@@ -50,6 +50,7 @@ app.layout = html.Div(
         # Add a pie chart to show the total successful launches count for all sites
         html.Div(dcc.Graph(id='success-pie-chart')),
         html.Br(),
+        
         html.Label("Payload Range (Kg)", style={'font-size': '15px', 'color': 'white', 'padding-left': '30px'}),
                                 
         # Add a slider to select payload range
@@ -74,11 +75,11 @@ def get_pie_chart(entered_site):
     if entered_site == 'All':
         df = filtered_df.groupby(['Launch Site'])['class'].sum().to_frame()
         df = df.reset_index()
-        fig = px.pie(df, values='class', names='Launch Site', title='Total Success Launches by Site')
+        fig = px.pie(df, values='class', names='Launch Site', title='Total success launches by site')
     else:
         df = filtered_df[filtered_df['Launch Site'] == entered_site]['class'].value_counts().to_frame()
         df['name'] = ['failure', 'success']
-        fig = px.pie(df, values='class', names='name', title=f'Total Success Launches for {entered_site}')
+        fig = px.pie(df, values='count', names='name', title=f'Total Success Launches for {entered_site}')
     
     fig.update_layout(
         template="plotly_dark",
