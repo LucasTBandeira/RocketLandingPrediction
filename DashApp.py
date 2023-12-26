@@ -1,8 +1,8 @@
 # Import required libraries
 import pandas as pd
 import dash
-import dash_html_components as html
-import dash_core_components as dcc
+from dash import html
+from dash import dcc
 from dash.dependencies import Input, Output
 import plotly.express as px
 
@@ -22,6 +22,7 @@ app.title = 'SpaceX Launch Records Dashboard'
 app.layout = html.Div(
     style={"backgroundColor": "#1E1E1E", "color": "white"}, 
     children=[
+        html.Br(),
         html.H1('SpaceX Launch Records Dashboard', style={'textAlign': 'center', 'color': 'White', 'font-size': 40}),
         
         # Add a dropdown list to enable Launch Site selection
@@ -62,7 +63,8 @@ app.layout = html.Div(
 
         # Add a scatter chart to show the correlation between payload and launch success
         html.Div(dcc.Graph(id='success-payload-scatter-chart')),
-        
+        html.H2("Launches in Each Site", style={'textAlign': 'center', 'color': 'White', 'font-size': 30}),
+        html.Iframe(id = "map", srcDoc=open('./Maps/launch_sites_map.html', 'r').read(), width='100%', height='600'),
         ])
 
 
@@ -78,7 +80,7 @@ def get_pie_chart(entered_site):
         fig = px.pie(df, values='class', names='Launch Site', title='Total success launches by site')
     else:
         df = filtered_df[filtered_df['Launch Site'] == entered_site]['class'].value_counts().to_frame()
-        df['name'] = ['failure', 'success']
+        df['name'] = ['Success', 'Failure']
         fig = px.pie(df, values='count', names='name', title=f'Total Success Launches for {entered_site}')
     
     fig.update_layout(
