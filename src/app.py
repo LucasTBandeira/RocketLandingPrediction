@@ -7,13 +7,14 @@ from dash.dependencies import Input, Output
 import plotly.express as px
 
 # Read the spacex data into pandas dataframe
-spacex_df = pd.read_csv("./Datasets/spacex_IBM_dash.csv")
+spacex_df = pd.read_csv("./data/spacex_IBM_dash.csv")
 max_payload = spacex_df['Payload Mass (kg)'].max()
 min_payload = spacex_df['Payload Mass (kg)'].min()
 
 # Create a dash application
 external_stylesheets = ["https://codepen.io/chriddyp/pen/bWLwgP.css"]
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+server = app.server
 
 # Set the title of the dashboard
 app.title = 'SpaceX Launch Records Dashboard'
@@ -64,7 +65,7 @@ app.layout = html.Div(
         # Add a scatter chart to show the correlation between payload and launch success
         html.Div(dcc.Graph(id='success-payload-scatter-chart')),
         html.H2("Launches in Each Site", style={'textAlign': 'center', 'color': 'White', 'font-size': 30}),
-        html.Iframe(id = "map", srcDoc=open('./Maps/launch_sites_map.html', 'r').read(), width='100%', height='600'),
+        html.Iframe(id = "map", srcDoc=open('./maps/launch_sites_map.html', 'r').read(), width='100%', height='600'),
         ])
 
 

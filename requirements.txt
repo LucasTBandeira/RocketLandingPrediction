@@ -1,0 +1,4 @@
+dash==2.14.0
+pandas==2.0.2
+gunicorn
+dash-tools
